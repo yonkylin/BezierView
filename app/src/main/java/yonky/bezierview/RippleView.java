@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 
 
 /**
@@ -44,7 +45,7 @@ public class RippleView extends View {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(Color.BLUE);
         waveCount = 4;
-        waveHeight =100;
+        waveHeight =40;
 
 
     }
@@ -62,15 +63,15 @@ public class RippleView extends View {
         ValueAnimator valueAnimator = ValueAnimator.ofInt(0,2*waveLength);
         valueAnimator.setDuration(1000);
         valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        valueAnimator.setInterpolator(new LinearInterpolator());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mStep = (int)animation.getAnimatedValue();
-//                invalidate();
+                invalidate();
             }
         });
-//        valueAnimator.start();
+        valueAnimator.start();
     }
 
     @Override
@@ -86,12 +87,12 @@ public class RippleView extends View {
             }else{
                 path2.quadTo(waveLength*i-(waveLength/2)-mStep,height/2+waveHeight,waveLength*i-mStep,height/2);
             }
-        path2.lineTo(waveLength*waveCount,height);
-            path2.lineTo(0,height);
-            path2.close();
-            canvas.drawPath(path2,mPaint);
-
 
         }
+        path2.lineTo(waveLength*waveCount,height);
+        path2.lineTo(0,height);
+        path2.close();
+        canvas.drawPath(path2,mPaint);
+
     }
 }
